@@ -1,6 +1,6 @@
 <?php
 // 1º - para conectar preciso usar um [usuario e senha]
-$db_name = 'crudb7';
+$db_name = 'modelo-crud-PDO';
 $db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
