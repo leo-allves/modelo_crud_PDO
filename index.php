@@ -1,18 +1,15 @@
 <?php
-//CRUD
+#PUXANDO CONFIG A CONEXÃO
 require 'config.php';
+#PUXANDO O USUARIO DAO
+require './dao/UsuarioDaoMysql.php';
 
-$lista = [];
+#Instanciando classe UsuarioDaoMysql passando conexão $pdo
+$usuarioDao = new UsuarioDaoMysql($pdo);
 
-# pegando os usuarios com uma busca
-$sql = $pdo->query("SELECT * FROM usuarios");
-
-# verificar SE existe algum usuario exibir na tabela
-if($sql->rowCount() > 0){
-    #PEGAR MEUS INTENS E ADD em LISTA
-    $lista = $sql->fetchAll(PDO::FETCH_ASSOC); //cria um array joga os dados dentro de lista
-    #FAZER UM LOOP PRA PEGAR OS DADOS EM BAIXO O FOREACH PARA RECEBER OS DADOS
-}
+#PEGANDO A LISTA DE USUARIOS - findAll está em UsuarioDaoMysql.php
+//ele vai retornar pra mim um array com todos os itens do array vão ser objetos da classe usuario
+$lista = $usuarioDao->findAll();
 ?>
 
 <a href="adicionar.php">ADICIONAR USUÁRIO</a>
@@ -21,25 +18,23 @@ if($sql->rowCount() > 0){
     <tr>
         <th>ID</th>
         <th>Nome</th>
-        <th>E_MAIL</th>
+        <th>EMAIL</th>
         <th>AÇÕES</th>
     </tr>
 
     <!-- 
-        //essa forma de foreach com php me permit abrir e fechar o PHP aonde eu quiser
-
-        # após verificar SE existe algum usuario exibir na tabela com foreach 
+        //pegando os objetos do array no meu findAll() e utilizando no meu formulario
     -->
 
     <?php foreach($lista as $usuario): ?>
         <tr>
-            <td><?= $usuario['id'] ?></td> 
-            <td><?= $usuario['nome'] ?></td>
-            <td><?= $usuario['email'] ?></td>
+            <td><?=$usuario->getId();?></td> 
+            <td><?=$usuario->getNome();?></td>
+            <td><?=$usuario->getEmail();?></td>
             <td>
                 <!-- Ações -->
-                <a href="editar.php?id=<?= $usuario['id']; ?>">[ Editar ]</a>
-                <a href="excluir.php?id=<?= $usuario['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir?')">[ Excluir ]</a>
+                <a href="editar.php?id=<?=$usuario->getId();?>">[ Editar ]</a>
+                <a href="excluir.php?id=<?=$usuario->getId();?>" onclick="return confirm('Tem certeza que deseja excluir?')">[ Excluir ]</a>
             </td>
         </tr>   
     <?php endforeach; ?>
