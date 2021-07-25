@@ -3,17 +3,12 @@
 require 'config.php';
 #PUXANDO O USUARIO DAO
 require './dao/UsuarioDaoMysql.php';
-
 #Instanciando classe UsuarioDaoMysql passando conexão $pdo
 $usuarioDao = new UsuarioDaoMysql($pdo);
-
-#PEGANDO A LISTA DE USUARIOS - findAll está em UsuarioDaoMysql.php
-//ele vai retornar pra mim um array com todos os itens do array vão ser objetos da classe usuario
+#pego todos os dados e jogo na var $lista
 $lista = $usuarioDao->findAll();
 ?>
-
 <a href="adicionar.php">ADICIONAR USUÁRIO</a>
-
 <table border="1" width="100%">
     <tr>
         <th>ID</th>
@@ -21,11 +16,9 @@ $lista = $usuarioDao->findAll();
         <th>EMAIL</th>
         <th>AÇÕES</th>
     </tr>
-
     <!-- 
-        //pegando os objetos do array no meu findAll() e utilizando no meu formulario
+        pegando os objetos do array no meu findAll() e utilizando no meu formulario
     -->
-
     <?php foreach($lista as $usuario): ?>
         <tr>
             <td><?=$usuario->getId();?></td> 

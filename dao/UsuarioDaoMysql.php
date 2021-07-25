@@ -5,7 +5,7 @@ class UsuarioDaoMysql implements UsuarioDAO {
     #RECEBENDO O PDO POR INJEÇÂO DE DEPENDENCIA
     private $pdo;
 
-    //mandar PDO que esta fazendo a manipulação o $driver ou $engine
+    //mandar PDO que esta fazendo a manipulação o $driver ou $engine - usando $driver do PDO
     public function __construct(PDO $driver) {
         $this->pdo = $driver;
     }

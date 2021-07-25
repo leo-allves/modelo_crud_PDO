@@ -93,4 +93,5 @@ OBS: dessa maneira eu separo a comunicação do BD da aplicação como um todo
 ### REGRA DO DAO
 
 - Eu tenho que ter uma CLASSE para o item especifico que eu estou manipulando
-- E eu tenho que ter uma outra CLASSE especifica para manipular(intermedia)  a comunicação com BD e a classe do item que estou manipulando
+- E eu tenho que ter uma outra CLASSE especifica para manipular(intermedia)  a comunicação com BD e a classe do item que
+  estou manipulando
