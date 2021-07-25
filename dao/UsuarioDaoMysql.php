@@ -23,8 +23,6 @@ class UsuarioDaoMysql implements UsuarioDAO {
         //add - $this->pdo->lastInsertId() - pega o ultimo id que foi iserido nessa requisição
         $u->setId($this->pdo->lastInsertId()); //adiciona o id do usuario que acabou de ser add
         return $u;
-
-
     }
 
     //READ - retorna uma lista de varios objetos da classe Usuario de todos que ele achar
@@ -52,10 +50,7 @@ class UsuarioDaoMysql implements UsuarioDAO {
                 //agora pego meu $array criado e jogo meu objeto dentro e retorno ele
                 $array[] = $u;
             }
-
         }
-
-
         return $array;
     }
 
@@ -76,9 +71,9 @@ class UsuarioDaoMysql implements UsuarioDAO {
             
             //criando obj
             $u = new Usuario();
-            $u->setId(['id']);
-            $u->setNome(['nome']);
-            $u->setEmail(['email']);
+            $u->setId($data['id']);
+            $u->setNome($data['nome']);
+            $u->setEmail($data['email']);
 
             //SE achou retorne o obj
             return $u;
@@ -86,23 +81,56 @@ class UsuarioDaoMysql implements UsuarioDAO {
             //se não achou
             return false;
         }
-
-
     }
 
     //READ - procurando um usuario, encontrando atraves do ID - ou pode ser por nome ou coisa do tipo
     public function findById($id) {
+        #IMPLEMENTAÇÃO se acho alguma coisa inseri - procedimento adicionar_action.php
 
+        #CRIANDO - RETORNAR O PROPIO USUARIO OU FALSE
+        $sql = $this->pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
+        //associando 1º para ao 2º param
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+
+        //SEele achou algum usuario
+        if($sql->rowCount() > 0){
+            //montar obj
+            $data = $sql->fetch();
+
+            //criando obj
+            $u = new Usuario();
+            $u->setId($data['id']);
+            $u->setNome($data['nome']);
+            $u->setEmail($data['email']);
+
+            //SE achou retorne o obj
+            return $u;
+        }else {
+            //se não achou
+            return false;
+        }
     }
 
     //UPDATE - recebe um obj de usuario com os dados ja atualizados, fara o processo de atualização no BD
     public function update(Usuario $u) {
+        //Update recebe o usuario e faz uma edição no BD
+        $sql = $this->pdo->prepare("UPDATE usuarios SET nome = :nome, email = :email WHERE id = :id");
+        $sql->bindValue(':nome', $u->getNome());
+        $sql->bindValue(':email', $u->getEmail());
+        $sql->bindValue(':id', $u->getId());
+        $sql->execute();
+
+        //confirma a alteração
+        return true;
 
     }
 
     //DELETE - pega o id e deleta
     public function delete($id) {
-
+        $sql = $this->pdo->prepare("DELETE FROM usuarios WHERE id = :id");
+        $sql->bindValue(':id', $id);
+        $sql->execute();
     }
 }
 

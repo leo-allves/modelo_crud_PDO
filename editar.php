@@ -1,52 +1,45 @@
 <?php
+#PUXANDO CONFIG A CONEXÃO
 require 'config.php';
+#PUXANDO O USUARIO DAO
+require './dao/UsuarioDaoMysql.php';
 
-$info = []; // recebera info. do user
+#Instanciando classe UsuarioDaoMysql passando conexão $pdo
+$usuarioDao = new UsuarioDaoMysql($pdo);
 
+
+ // recebera info. do user
+$usuario = false;
 #PEGANDO O ID
 $id = filter_input(INPUT_GET, 'id');
 
 #VERIFICANDO SE FOI ENVIADO ALGUM DADO
 if($id){ //se tiver dados
-
-    #Buscar o ID
-    $sql = $pdo->prepare("SELECT * FROM usuarios WHERE id = :id");
-    //substituir os dados
-    $sql->bindValue(':id', $id);
-    //executando $sql
-    $sql->execute();
-
-    #VERIFICANDO SE ACHOU ALGUMA COISA
-    if($sql->rowCount() > 0){
-        //fetch() vai pegar só primeiro item diferente do fech_All que pega tudo, só quero o id então é o primeiro.
-        $info = $sql->fetch(PDO::FETCH_ASSOC); 
-
-    } else {
-        header("location: index.php");
-        exit;
-    }
-
-}else{ //se não tiver dados
+    //verificando se id existe vai substituir ou por false ou pela instancia
+     $usuario = $usuarioDao->findById($id);
+}
+if($usuario === false) {
     header("location: index.php");
     exit;
 }
+//SE passar daqui e porque achou
 ?>
 
 <h1>Editar Usuário</h1>
 
 <form method="POST" action="editar_action.php">
     <!-- mandando o id via hidden para editar -->
-    <input type="hidden" name="id" value="<?=$info['id'] ?>">
+    <input type="hidden" name="id" value="<?=$usuario->getId();?>">
     <label for="">
         Nome: <br>
-        <input type="text" name="nome" value="<?=$info['nome'] ?>">
+        <input type="text" name="nome" value="<?=$usuario->getNome();?>">
     </label>
 
     <br><br>
 
     <label for="">
         E-mail: <br>
-        <input type="email" name="email" value="<?=$info['email'] ?>">
+        <input type="email" name="email" value="<?=$usuario->getEmail();?>">
     </label>
     
     <br><br>

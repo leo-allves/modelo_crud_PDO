@@ -15,9 +15,11 @@ $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 //verificar se está certo se não retornar para adicionar.php
 if ($nome && $email) {
 
+    //verificando
+
     #IMPLEMENTAÇÃO
     if($usuarioDao->findByEmail($email) === false){ //se return false ñ achou user with email
-        #add
+        #add - criando novo usuario
         $novoUsuario = new Usuario();
         $novoUsuario->setNome($nome);
         $novoUsuario->setEmail($email);
@@ -25,7 +27,7 @@ if ($nome && $email) {
         //so tera id quando for criado
 
         #USANDO DAO
-        // returnando o obj completo
+        // pegando o novo usuario e jogando no add() usando DAO criando no BD
         $usuarioDao->add($novoUsuario);
 
         #REDIRECIONANDO PARA index.php a "listagem"
